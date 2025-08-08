@@ -11,13 +11,11 @@ type FilterResponse = {
 };
 
 interface CategoryPageProps {
-  params: {
-    category: string;
-  };
+  params: Promise<{ category: string }>;
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = params;
+  const { category } = await params;
 
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`,
