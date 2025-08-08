@@ -18,11 +18,11 @@ type LookupResponse = {
 };
 
 type Params = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function MealPage({ params }: Params) {
-  const { id } = params;
+  const { id } = await params;
 
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${encodeURIComponent(id)}`,
