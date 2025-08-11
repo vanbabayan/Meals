@@ -1,4 +1,4 @@
-import MealDetail from "@/components/MealDetail";
+import MealDetail from "./MealDetail";
 
 type LookupResponse = {
   meals: MealDetailData[];
