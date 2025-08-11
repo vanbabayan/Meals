@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SearchProvider } from "@/components/SearchContext";
 
 
 export const metadata: Metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <SearchProvider>
         {children}
+        </SearchProvider>
       </body>
     </html>
   );

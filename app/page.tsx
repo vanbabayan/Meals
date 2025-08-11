@@ -1,3 +1,4 @@
+import { GlobalSearch } from "@/components/GlobalSearch";
 import Link from "next/link";
 
 type Category = {
@@ -20,9 +21,12 @@ export default async function HomePage() {
 
   return (
     <div className="container mx-auto px-6 py-10 bg-white min-h-screen">
+      
       <h1 className="text-center text-4xl font-extrabold text-green-950 mb-10">
         Meal Categories
       </h1>
+      
+      <GlobalSearch />
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {data.categories.map(item => (
           <li

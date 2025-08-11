@@ -15,7 +15,7 @@ type Props = {
   meals: MealBrief[];
 };
 
-export default function MealsGridWithAutocomplete({ meals }: Props) {
+export default function MealList({ meals }: Props) {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [showDropDown, setShowDropDown] = useState(false);

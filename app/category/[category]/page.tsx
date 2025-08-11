@@ -1,4 +1,4 @@
-import MealsGridWithAutocomplete from "@/components/MealsGridWithAutocomplete";
+import CategoryList from "../CategoryList";
 
 type MealBrief = {
   strMeal: string;
@@ -6,16 +6,17 @@ type MealBrief = {
   idMeal: string;
 };
 
+
 type FilterResponse = {
   meals: MealBrief[];
 };
 
 interface CategoryPageProps {
-  params: Promise<{ category: string }>;
+  params: { category: string };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = await params;
+  const { category } = params;
 
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`,
@@ -31,11 +32,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <h1 className="text-5xl text-center mt-2 text-green-950 font-black">
         Meals in {category}
       </h1>
-      {data.meals ? (
-        <MealsGridWithAutocomplete meals={data.meals} />
-      ) : (
-        <p>No Meals found for category {category}</p>
-      )}
+      <CategoryList category={category} meals={data.meals} />
     </div>
   );
 }
