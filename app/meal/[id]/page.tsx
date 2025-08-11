@@ -1,5 +1,6 @@
 import MealDetail from "./MealDetail";
 
+
 type LookupResponse = {
   meals: MealDetailData[];
 };
@@ -16,11 +17,11 @@ export type MealDetailData = {
   [key: `strMeasure${number}`]: string | undefined;
 };
 
-type Params = {
-  params: { id: string };
-};
+interface MealPageProps {
+  params: { id: string };  
+}
 
-export default async function MealPage({ params }: Params) {
+export default async function MealPage({ params }: MealPageProps) {
   const { id } = params; 
 
   const res = await fetch(

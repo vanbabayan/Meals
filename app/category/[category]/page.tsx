@@ -1,3 +1,5 @@
+
+
 import MealList from "@/components/MealList";
 
 type MealBrief = {
