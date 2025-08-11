@@ -1,42 +1,46 @@
-
-
 import MealList from "@/components/MealList";
 
-type MealBrief = {
+export type MealBrief = {
   strMeal: string;
   strMealThumb: string;
   idMeal: string;
 };
 
 type FilterResponse = {
-  meals: MealBrief[];
+  meals: MealBrief[] | null;
 };
 
-interface CategoryPageProps {
+export default async function CategoryPage({
+  params,
+}: {
   params: { category: string };
-}
-
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = params; 
+}) {
+  const { category } = params;
 
   const res = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`,
+    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(
+      category
+    )}`,
     { next: { revalidate: 60 } }
   );
 
-  if (!res.ok) throw new Error(`Failed to fetch meals for category ${category}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch meals for category ${category}`);
+  }
 
   const data: FilterResponse = await res.json();
+  const meals = data.meals ?? [];
 
   return (
     <div>
       <h1 className="text-5xl text-center mt-2 text-green-950 font-black">
         Meals in {category}
       </h1>
-      {data.meals ? (
-        <MealList meals={data.meals} />
+
+      {meals.length > 0 ? (
+        <MealList meals={meals} />
       ) : (
-        <p>No Meals found for category {category}</p>
+        <p className="text-center mt-6 text-green-900">No Meals found for {category}</p>
       )}
     </div>
   );
