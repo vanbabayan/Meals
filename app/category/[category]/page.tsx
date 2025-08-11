@@ -1,11 +1,10 @@
-import CategoryList from "../CategoryList";
+import MealList from "@/components/MealList";
 
 type MealBrief = {
   strMeal: string;
   strMealThumb: string;
   idMeal: string;
 };
-
 
 type FilterResponse = {
   meals: MealBrief[];
@@ -16,7 +15,7 @@ interface CategoryPageProps {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = params;
+  const { category } = params; 
 
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`,
@@ -32,7 +31,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <h1 className="text-5xl text-center mt-2 text-green-950 font-black">
         Meals in {category}
       </h1>
-      <CategoryList category={category} meals={data.meals} />
+      {data.meals ? (
+        <MealList meals={data.meals} />
+      ) : (
+        <p>No Meals found for category {category}</p>
+      )}
     </div>
   );
 }

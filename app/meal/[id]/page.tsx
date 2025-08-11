@@ -1,4 +1,4 @@
-import MealDetail from "./MealDetail";
+import MealDetail from "@/components/MealDetail";
 
 type LookupResponse = {
   meals: MealDetailData[];
@@ -17,11 +17,11 @@ export type MealDetailData = {
 };
 
 type Params = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 };
 
 export default async function MealPage({ params }: Params) {
-  const { id } = await params;
+  const { id } = params; 
 
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${encodeURIComponent(id)}`,
