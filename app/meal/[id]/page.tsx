@@ -1,6 +1,5 @@
 import BackBtn from '@/components/BackBtn';
 import Image from 'next/image';
-import { Metadata } from 'next';
 
 interface MealDetailData {
   idMeal: string;
