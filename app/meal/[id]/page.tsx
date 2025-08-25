@@ -9,11 +9,8 @@ interface MealDetailData {
   [key: string]: string | undefined;
 }
 
-export default async function MealPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+// Серверный компонент, async, напрямую принимает params
+export default async function MealPage({ params }: { params: { id: string } }) {
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
   );
@@ -21,7 +18,6 @@ export default async function MealPage({
   const meal: MealDetailData = data.meals[0];
 
   const ingredients: { ingredient: string; measure: string }[] = [];
-
   for (let i = 1; i <= 20; i++) {
     const ingredient = meal[`strIngredient${i}`];
     const measure = meal[`strMeasure${i}`];
