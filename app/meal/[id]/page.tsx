@@ -1,7 +1,7 @@
 import BackBtn from '@/components/BackBtn';
 import Image from 'next/image';
 
-interface MealDetailData {
+export interface MealDetailData {
   idMeal: string;
   strMeal: string;
   strInstructions: string;
@@ -9,7 +9,7 @@ interface MealDetailData {
   [key: string]: string | undefined;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
 export default async function MealPage({ params }) {
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
