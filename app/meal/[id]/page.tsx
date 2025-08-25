@@ -8,8 +8,7 @@ type MealDetailData = {
   strCategory?: string | null;
   strArea?: string | null;
   strYoutube?: string | null;
-  [key: string]: any; // упрощённо: дополнительные поля (strIngredient1..20, strMeasure1..20)
-};
+} & Record<string, string | null | undefined>;
 
 type Props = {
   params: { id: string };
@@ -62,7 +61,7 @@ export default async function MealPage({ params }: Props) {
       {!meal ? (
         <div className="py-20 text-center text-green-900">
           <h2 className="text-2xl font-bold">Meal not found</h2>
-          <p className="mt-2">This meal doesn't exist or couldn't be loaded.</p>
+          <p className="mt-2">This meal does not exist or could not be loaded.</p>
         </div>
       ) : (
         <>
@@ -75,7 +74,7 @@ export default async function MealPage({ params }: Props) {
 
           <div className="w-full h-72 relative rounded overflow-hidden mb-6 shadow-md">
             {meal.strMealThumb?.trim() ? (
-              // Убедись, что домен images разрешён в next.config.js (remotePatterns/domains)
+              // Убедись, что домен разрешен в next.config.js для next/image
               <Image
                 src={meal.strMealThumb}
                 alt={meal.strMeal ?? "Meal image"}
