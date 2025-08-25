@@ -1,15 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-type MealDetailData = {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb?: string | null;
-  strCategory?: string | null;
-  strArea?: string | null;
-  strYoutube?: string | null;
-} & Record<string, string | null | undefined>; 
-
 export default async function MealPage(props: unknown) {
   const { params } = props as { params: { id: string } };
   const { id } = params;
@@ -24,23 +15,19 @@ export default async function MealPage(props: unknown) {
   }
 
   const data = await res.json();
-  const meal: MealDetailData | null = data?.meals?.[0] ?? null;
+  const meal = data?.meals?.[0] ?? null;
 
-  function parseIngredients(m: MealDetailData | null) {
-    const list: { ingredient: string; measure: string }[] = [];
-    if (!m) return list;
-
+  const ingredients: { ingredient: string; measure: string }[] = [];
+  if (meal) {
     for (let i = 1; i <= 20; i++) {
-      const ing = m[`strIngredient${i}`];
-      const meas = m[`strMeasure${i}`];
+      const ing = meal[`strIngredient${i}`];
+      const meas = meal[`strMeasure${i}`];
       if (ing && typeof ing === "string" && ing.trim()) {
-        list.push({ ingredient: ing.trim(), measure: (meas ?? "").trim() });
+        ingredients.push({ ingredient: ing.trim(), measure: (meas ?? "").trim() });
       }
     }
-    return list;
   }
 
-  const ingredients = parseIngredients(meal);
   const categoryHref =
     meal?.strCategory && meal.strCategory.trim()
       ? `/category/${encodeURIComponent(meal.strCategory)}`
@@ -69,14 +56,14 @@ export default async function MealPage(props: unknown) {
           </p>
 
           <div className="w-full h-72 relative rounded overflow-hidden mb-6 shadow-md">
-            {meal.strMealThumb?.trim() ? (
+            {meal.strMealThumb?.trim() && (
               <Image
                 src={meal.strMealThumb}
                 alt={meal.strMeal ?? "Meal image"}
                 fill
                 className="object-cover"
               />
-            ) : null}
+            )}
           </div>
 
           <h2 className="text-2xl font-semibold text-green-900 mb-3">Ingredients</h2>
