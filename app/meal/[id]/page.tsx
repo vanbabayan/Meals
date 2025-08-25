@@ -8,13 +8,10 @@ type MealDetailData = {
   strCategory?: string | null;
   strArea?: string | null;
   strYoutube?: string | null;
-} & Record<string, string | null | undefined>;
+} & Record<string, string | null | undefined>; 
 
-type Props = {
-  params: { id: string };
-};
-
-export default async function MealPage({ params }: Props) {
+export default async function MealPage(props: unknown) {
+  const { params } = props as { params: { id: string } };
   const { id } = params;
 
   const res = await fetch(
@@ -29,7 +26,6 @@ export default async function MealPage({ params }: Props) {
   const data = await res.json();
   const meal: MealDetailData | null = data?.meals?.[0] ?? null;
 
-  // helper: собрать ингредиенты
   function parseIngredients(m: MealDetailData | null) {
     const list: { ingredient: string; measure: string }[] = [];
     if (!m) return list;
@@ -74,7 +70,6 @@ export default async function MealPage({ params }: Props) {
 
           <div className="w-full h-72 relative rounded overflow-hidden mb-6 shadow-md">
             {meal.strMealThumb?.trim() ? (
-              // Убедись, что домен разрешен в next.config.js для next/image
               <Image
                 src={meal.strMealThumb}
                 alt={meal.strMeal ?? "Meal image"}
