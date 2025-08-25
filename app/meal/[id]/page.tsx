@@ -1,5 +1,6 @@
 import BackBtn from '@/components/BackBtn';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 interface MealDetailData {
   idMeal: string;
@@ -9,8 +10,12 @@ interface MealDetailData {
   [key: string]: string | undefined;
 }
 
-// Серверный компонент, async, напрямую принимает params
-export default async function MealPage({ params }: { params: { id: string } }) {
+
+interface MealPageProps {
+  params: { id: string };
+}
+
+export default async function MealPage({ params }: MealPageProps) {
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
   );
