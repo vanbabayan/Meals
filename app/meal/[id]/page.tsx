@@ -1,30 +1,33 @@
-import Image from "next/image";
-import BackBtn from "@/components/BackBtn";
+import BackBtn from '@/components/BackBtn';
+import Image from 'next/image';
 
-type Meal = {
+interface MealDetailData {
+  idMeal: string;
   strMeal: string;
-  strCategory: string;
-  strArea: string;
+  strInstructions: string;
   strMealThumb: string;
-  strYoutube?: string;
-  [key: `strIngredient${number}`]: string | null;
-  [key: `strMeasure${number}`]: string | null;
-};
-
-async function getMeal(id: string): Promise<Meal> {
-  const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await res.json();
-  return data.meals[0];
+  [key: string]: string | undefined;
 }
 
-export default async function MealPage({ params }: { params: { id: string } }) {
-  const meal = await getMeal(params.id);
+export default async function MealPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const res = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
+  );
+  const data = await res.json();
+  const meal: MealDetailData = data.meals[0];
 
   const ingredients: { ingredient: string; measure: string }[] = [];
+
   for (let i = 1; i <= 20; i++) {
-    const ing = meal[`strIngredient${i}`];
-    const meas = meal[`strMeasure${i}`];
-    if (ing && ing.trim()) ingredients.push({ ingredient: ing, measure: meas ?? "" });
+    const ingredient = meal[`strIngredient${i}`];
+    const measure = meal[`strMeasure${i}`];
+    if (ingredient && ingredient.trim() !== '') {
+      ingredients.push({ ingredient, measure: measure || '' });
+    }
   }
 
   return (
@@ -32,39 +35,24 @@ export default async function MealPage({ params }: { params: { id: string } }) {
       <div className="absolute top-4 left-4 z-20">
         <BackBtn />
       </div>
-
-      <h1 className="text-4xl font-extrabold text-green-900 mb-4">{meal.strMeal}</h1>
-
-      <p className="mb-4 text-green-800 space-x-4">
-        <strong>Category:</strong> <span>{meal.strCategory}</span>{" "}
-        <strong>Area:</strong> <span>{meal.strArea}</span>
-      </p>
-
-      {meal.strMealThumb && (
-        <div className="w-full h-72 relative rounded overflow-hidden mb-6 shadow-md">
-          <Image src={meal.strMealThumb} alt={meal.strMeal} fill className="object-cover" />
-        </div>
-      )}
-
-      <h2 className="text-2xl font-semibold text-green-900 mb-3">Ingredients</h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6 list-disc list-inside text-green-800">
-        {ingredients.map((item, idx) => (
-          <li key={idx}>
-            {item.ingredient} — {item.measure}
+      <h1 className="text-3xl font-bold mb-4">{meal.strMeal}</h1>
+      <Image
+        src={meal.strMealThumb}
+        alt={meal.strMeal}
+        width={500}
+        height={300}
+        className="rounded-lg mb-4"
+      />
+      <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
+      <ul className="mb-4">
+        {ingredients.map((item, index) => (
+          <li key={index}>
+            {item.ingredient} - {item.measure}
           </li>
         ))}
       </ul>
-
-      {meal.strYoutube && (
-        <a
-          href={meal.strYoutube}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block text-green-900 font-semibold hover:text-green-700 transition-colors duration-200 underline"
-        >
-          ▶ Watch on YouTube
-        </a>
-      )}
+      <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
+      <p>{meal.strInstructions}</p>
     </div>
   );
 }
