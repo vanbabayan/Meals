@@ -9,7 +9,7 @@ export interface MealDetailData {
   [key: string]: string | undefined;
 }
 
-export default async function MealPage({ params }) {
+export default async function MealPage({ params }: { params: { id: string } }) {
   const res = await fetch(
     `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${params.id}`
   );
