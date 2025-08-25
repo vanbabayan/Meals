@@ -10,11 +10,10 @@ type FilterResponse = {
   meals: MealBrief[] | null;
 };
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: { category: string };
-}) {
+type Props = { params: { category: string } };
+
+export default async function CategoryPage(props: unknown) {
+  const { params } = props as Props;           
   const { category } = params;
 
   const res = await fetch(
